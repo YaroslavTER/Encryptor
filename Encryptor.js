@@ -5,7 +5,7 @@ const coeficients = {
 };
 
 const mod = (a, b) => (a % b + b) % b;
-const shift = (charCode, key) => mod(charCode + key, coeficients.limit) + coeficients.begin;
+const shift = (charCode, key) => mod(charCode + key, coeficients.limit);
 const isChar = (charCode) => charCode >= coeficients.begin &&
     charCode <= coeficients.end ? true : false;
 
@@ -16,14 +16,13 @@ function getAlphabet(alphabet) {
     return alphabet;
 }
 
-function convertIntoIntArray(line) {
+function convertKeyIntoIntArray(line) {
     const length = line.length;
     let numbers = [];
 
     for(let i = 0; i < length; i++) {
-        console.log(line);
         if(isChar(line.charCodeAt(i))) 
-            numbers.push(Number(line.charCodeAt(i)));
+            numbers.push(Number(line.charCodeAt(i)) - coeficients.begin);
         else 
             return [Number(line)];
     }
@@ -31,19 +30,39 @@ function convertIntoIntArray(line) {
     return numbers;
 }
 
-function encrypt() {
+function convertMessageIntoIntArray(message) {
+    const length = message.length;
+    let charCodesOfMessage = [];
+    for(let i = 0; i < length; i++) {
+        charCodesOfMessage.push(message.charCodeAt(i) - coeficients.begin);
+    }
+    return charCodesOfMessage;
+}
+
+function converCharCodesIntoLine(codes) {
+    let line = "";
+    for(let code of codes) {
+        line += String.fromCharCode(code + coeficients.begin);
+    }
+    return line;
+}
+
+function encrypt(isReverseKey) {
     let alphabet = getAlphabet([]);
     let message = document.getElementById("messageId").value;
-    let keys = convertIntoIntArray(document.getElementById("keyId").value);
+    let keys = convertKeyIntoIntArray(document.getElementById("keyId").value);
     let encryptedMessage = "";
     let j = 0;
-    const length = message.length;
+    let charCodesOfMessage = convertMessageIntoIntArray(message);
+    const keysLength = keys.length;
+    const length = charCodesOfMessage.length;
+    let shiftedCodes = [];
 
     for(let i = 0; i < length; i++) {
-        let currentKey = keys[mod(j++, keys.length)];
-        charCode = shift(message.charCodeAt(i), currentKey);
-        encryptedMessage += String.fromCharCode(charCode);
-    }
+        let key = keys[mod(j++, keysLength)];
+        shiftedCodes.push(shift(charCodesOfMessage[i], isReverseKey ? -key : key )); 
+    };
 
+    encryptedMessage = converCharCodesIntoLine(shiftedCodes);
     document.getElementById("encrypterMessageId").value = encryptedMessage;
 }
