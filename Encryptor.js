@@ -52,15 +52,15 @@ function encrypt(isReverseKey) {
     let message = document.getElementById("messageId").value;
     let keys = convertKeyIntoIntArray(document.getElementById("keyId").value);
     let encryptedMessage = "";
-    let j = 0;
     let charCodesOfMessage = convertMessageIntoIntArray(message);
     const keysLength = keys.length;
     const length = charCodesOfMessage.length;
     let shiftedCodes = [];
+    let j = 0;
 
     for(let i = 0; i < length; i++) {
         let key = keys[mod(j++, keysLength)];
-        shiftedCodes.push(shift(charCodesOfMessage[i], isReverseKey ? -key : key )); 
+        shiftedCodes.push(shift(charCodesOfMessage[i], isReverseKey ? -key : key)); 
     };
 
     encryptedMessage = converCharCodesIntoLine(shiftedCodes);
