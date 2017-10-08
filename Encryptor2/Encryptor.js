@@ -1,4 +1,4 @@
-const spetialSymbol = {
+const specialSymbol = {
     open: "[",
     comma: ",",
     empty: "",
@@ -10,7 +10,7 @@ const spetialSymbol = {
 let encryptionMatrix;
 let decryptionMatrix;
 
-const getSeparator = (index, symbol, length) => index != length - 1 ? symbol : spetialSymbol.empty;
+const getSeparator = (index, symbol, length) => index != length - 1 ? symbol : specialSymbol.empty;
 
 function encryptMessage() {
     let number = Number(document.getElementById("n").value);
@@ -18,7 +18,7 @@ function encryptMessage() {
     encryptionMatrix = generateMatrix(number);
     document.getElementById("outputMatrix").value = matrixToString(encryptionMatrix);
 
-    let sentence = document.getElementById("message").value.split(spetialSymbol.space);
+    let sentence = document.getElementById("message").value.split(specialSymbol.space);
 
     document.getElementById("encryptedMessage").value = applyMatrixToSentence(sentence, encryptionMatrix);
 
@@ -27,30 +27,30 @@ function encryptMessage() {
 }
 
 function decryptMessage() {
-    let sentence = document.getElementById("message").value.split(spetialSymbol.space);
+    let sentence = document.getElementById("message").value.split(specialSymbol.space);
     document.getElementById("encryptedMessage").value = applyMatrixToSentence(sentence, decryptionMatrix);
 }
 
 function removeAuxiliarSymbol() {
-    let message = document.getElementById("encryptedMessage").value.split(spetialSymbol.empty);
+    let message = document.getElementById("encryptedMessage").value.split(specialSymbol.empty);
     const length = message.length;
     for(let i = 0; i < length; i++) {
-        if(message[i] == spetialSymbol.auxiliar) {
+        if(message[i] == specialSymbol.auxiliar) {
             message.splice(i, 1);
             i--;
         }
     }
-    document.getElementById("encryptedMessage").value = message.join(spetialSymbol.empty);
+    document.getElementById("encryptedMessage").value = message.join(specialSymbol.empty);
 }
 
 function applyMatrixToSentence(sentence, matrix) {
     let encryptedWords = [];
     
     for(let word of sentence) {
-        encryptedWords.push(applyMatrixToWord(word.split(spetialSymbol.empty), matrix));
+        encryptedWords.push(applyMatrixToWord(word.split(specialSymbol.empty), matrix));
     }
 
-    return encryptedWords.join(spetialSymbol.space);
+    return encryptedWords.join(specialSymbol.space);
 }
 
 function applyMatrixToWord(word, matrix) {
@@ -105,7 +105,7 @@ function getBalancedMatrix(matrix) {
     let smallerArray = matrix[0];
     let counter = 0;
     while(counter < numberOfAuxElements) {
-        smallerArray.push(spetialSymbol.auxiliar);
+        smallerArray.push(specialSymbol.auxiliar);
         counter++;
     }
     return matrix;
@@ -149,22 +149,22 @@ function getIndexFromMinElement(line) {
 function matrixToString(matrix) {
     const matrixLength = matrix.length;
     let matrixString = "";
-    matrixString += spetialSymbol.open;
-    matrixString += spetialSymbol.newLine + spetialSymbol.space;
+    matrixString += specialSymbol.open;
+    matrixString += specialSymbol.newLine + specialSymbol.space;
     for(let i = 0; i < matrixLength; i++) {
         let line = matrix[i];
         const lineLength = line.length;
-        matrixString += spetialSymbol.open;        
+        matrixString += specialSymbol.open;        
         for(let j = 0; j < lineLength; j++) {            
             matrixString += line[j].toString();
-            matrixString += getSeparator(j, spetialSymbol.comma, lineLength);
+            matrixString += getSeparator(j, specialSymbol.comma, lineLength);
         }
-        matrixString += spetialSymbol.close;
-        matrixString += getSeparator(i, spetialSymbol.comma, matrixLength);
-        matrixString += getSeparator(i, spetialSymbol.newLine + spetialSymbol.space, matrixLength);
+        matrixString += specialSymbol.close;
+        matrixString += getSeparator(i, specialSymbol.comma, matrixLength);
+        matrixString += getSeparator(i, specialSymbol.newLine + specialSymbol.space, matrixLength);
     }
-    matrixString += spetialSymbol.newLine;
-    matrixString += spetialSymbol.close;
+    matrixString += specialSymbol.newLine;
+    matrixString += specialSymbol.close;
     return matrixString;
 }
 
