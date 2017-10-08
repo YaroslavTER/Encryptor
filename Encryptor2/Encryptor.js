@@ -2,7 +2,10 @@ const spetialSymbol = {
     open: "[",
     comma: ",",
     empty: "",
-    close: "]"
+    close: "]",
+    auxiliar: "_",
+    newLine: "\n",
+    space: " "
 };
 let encryptionMatrix;
 let decryptionMatrix;
@@ -13,28 +16,122 @@ function encryptMessage() {
     let number = Number(document.getElementById("n").value);
 
     encryptionMatrix = generateMatrix(number);
-    document.getElementById("outputMatrix").value = matrixToString(encryptionMatrix); 
+    document.getElementById("outputMatrix").value = matrixToString(encryptionMatrix);
+
+    let sentence = document.getElementById("message").value.split(spetialSymbol.space);
+
+    document.getElementById("encryptedMessage").value = applyMatrixToSentence(sentence, encryptionMatrix);
 
     decryptionMatrix = getInverseMatrix(encryptionMatrix);
     document.getElementById("matrixForDecrypt").value = matrixToString(decryptionMatrix); 
 }
 
-function getInverseMatrix(matrix) {
-    let inverseMatrix = [[],[]];
+function decryptMessage() {
+    let sentence = document.getElementById("message").value.split(spetialSymbol.space);
+    document.getElementById("encryptedMessage").value = applyMatrixToSentence(sentence, decryptionMatrix);
+}
+
+function removeAuxiliarSymbol() {
+    let message = document.getElementById("encryptedMessage").value.split(spetialSymbol.empty);
+    const length = message.length;
+    for(let i = 0; i < length; i++) {
+        if(message[i] == spetialSymbol.auxiliar) {
+            message.splice(i, 1);
+            i--;
+        }
+    }
+    document.getElementById("encryptedMessage").value = message.join(spetialSymbol.empty);
+}
+
+function applyMatrixToSentence(sentence, matrix) {
+    let encryptedWords = [];
+    
+    for(let word of sentence) {
+        encryptedWords.push(applyMatrixToWord(word.split(spetialSymbol.empty), matrix));
+    }
+
+    return encryptedWords.join(spetialSymbol.space);
+}
+
+function applyMatrixToWord(word, matrix) {
+    let partList = separateWordByMatrixLength(word, matrix);
+    let encryptedWordList = [];
+    
+    for(let part of partList) {
+        encryptedWordList.push(sortMatrix(part, 1));
+    }    
+
+    return joinList(encryptedWordList);
+}
+
+function joinList(list) {
+    let line = "";
+    for(let part of list) {
+        line += part[0].join("");
+    }
+    return line;
+}
+
+function separateWordByMatrixLength(word, matrix) {
+    const codeLength = matrix[1].length;
+    const wordLength = word.length;
+    let partList = [];
+
+    if(wordLength > codeLength) {
+        let part = [];
+        let counter = 0;
+        while(counter < wordLength) {
+            part.push(word[counter]);
+            if(part.length == codeLength) {
+                partList.push([part, matrix[1].slice()]);
+                part = null;
+                part = [];
+            }
+            counter++;
+        }      
+        if(part.length != 0) {
+            partList.push(getBalancedMatrix([part, matrix[1].slice()]));
+        }
+    } else {
+        console.log(word);
+        partList.push(getBalancedMatrix([word, matrix[1].slice()]))
+    }
+
+    return partList;
+}
+
+function getBalancedMatrix(matrix) {
+    const numberOfAuxElements = matrix[1].length - matrix[0].length;
+    let smallerArray = matrix[0];
+    let counter = 0;
+    while(counter < numberOfAuxElements) {
+        smallerArray.push(spetialSymbol.auxiliar);
+        counter++;
+    }
+    return matrix;
+}
+
+function getInverseMatrix(matrix) {    
+    let inverseMatrix = sortMatrix(matrix, 1);
+    inverseMatrix = swap(0, 1, inverseMatrix);
+    return inverseMatrix;
+}
+
+function sortMatrix(matrix, mainRowIndex) {
+    let sortedMatrix = [[],[]];
     let tmpMatrix = matrix.slice();
     const length = tmpMatrix.length;
     let i = 0;
-    tmpMatrix = swap(0, 1, tmpMatrix);
     do {
-        let indexFromMinElement = getIndexFromMinElement(tmpMatrix[0]);
+        let indexFromMinElement = getIndexFromMinElement(tmpMatrix[mainRowIndex]);
         while(i < length) {
-            inverseMatrix[i].push(tmpMatrix[i][indexFromMinElement]);
+            sortedMatrix[i].push(tmpMatrix[i][indexFromMinElement]);
             tmpMatrix[i].splice(indexFromMinElement, 1);
             i++;
         }
         i = 0;
     } while(tmpMatrix[0].length != 0);
-    return inverseMatrix;
+    return sortedMatrix;
 }
 
 function getIndexFromMinElement(line) {
@@ -53,7 +150,7 @@ function matrixToString(matrix) {
     const matrixLength = matrix.length;
     let matrixString = "";
     matrixString += spetialSymbol.open;
-    matrixString += "\n ";
+    matrixString += spetialSymbol.newLine + spetialSymbol.space;
     for(let i = 0; i < matrixLength; i++) {
         let line = matrix[i];
         const lineLength = line.length;
@@ -64,9 +161,9 @@ function matrixToString(matrix) {
         }
         matrixString += spetialSymbol.close;
         matrixString += getSeparator(i, spetialSymbol.comma, matrixLength);
-        matrixString += getSeparator(i, "\n ", matrixLength);
+        matrixString += getSeparator(i, spetialSymbol.newLine + spetialSymbol.space, matrixLength);
     }
-    matrixString += "\n";
+    matrixString += spetialSymbol.newLine;
     matrixString += spetialSymbol.close;
     return matrixString;
 }
@@ -111,6 +208,8 @@ function swap(firstIndex, secondIndex, sequence) {
     return sequence;
 }
 
-function decryptMessage() {
-
+function swapMessages() {
+    let tmp = document.getElementById("message").value;
+    document.getElementById("message").value = document.getElementById("encryptedMessage").value;
+    document.getElementById("encryptedMessage").value = tmp;
 }

@@ -2,8 +2,8 @@
 <p>
    <label for="from">Your message</label>
 <br />
-   <textarea name="message" id="message" style="height: 100px; width: 700px;"
-             onclick="">qwerty</textarea>
+   <textarea id="message" style="height: 100px; width: 700px;"
+             onclick="">qwertyasjkghdfjkashdgf</textarea>
 </p>
 <p>
     <label for="from">n</label>
@@ -19,19 +19,21 @@
     <textarea id="matrixForDecrypt"  style="height: 100px; width: 700px;">Using for decryption</textarea>
 </p>
 
+<button onclick="swapMessages()">Swap</button>
 <button onclick="decryptMessage()">Decrypt</button>
+<button onclick="removeAuxiliarSymbol()">Remove symbol</button>
 
 <p>
    <label for="from">Encrypted message</label>
 <br />
-   <textarea name="encrypterMessage" id="encrypterMessageId"
+   <textarea id="encryptedMessage"
              style="height: 100px; width: 700px;"
-             onclick=""></textarea>
+             onclick="">No encrypted now</textarea>
 </p>
 <p>
 <label for="from">Matrix</label>
 <br />
-   <textarea name="sequences" id="outputMatrix"
+   <textarea  id="outputMatrix"
              style="height: 100px; width: 700px;"
              onclick="">Current matrix</textarea>
 </p>
