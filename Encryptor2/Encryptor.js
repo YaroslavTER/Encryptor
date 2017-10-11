@@ -12,11 +12,14 @@ let decryptionMatrix;
 
 const getSeparator = (index, symbol, length) => index != length - 1 ? symbol : specialSymbol.empty;
 
+const factorial = (number) => number > 0 ? number * factorial(number - 1) : 1;
+
 function encryptMessage() {
     let number = Number(document.getElementById("n").value);
 
     encryptionMatrix = generateMatrix(number);
-    document.getElementById("outputMatrix").value = matrixToString(encryptionMatrix);
+    document.getElementById("outputMatrix").value = matrixToString(encryptionMatrix) + 
+        specialSymbol.newLine + "k = n! = " + factorial(number);
 
     let sentence = document.getElementById("message").value.split(specialSymbol.space);
 
