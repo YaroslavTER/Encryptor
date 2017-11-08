@@ -5,12 +5,17 @@ const symbolsData = {
 
 const graphCoefs = {
     begin: 0,
-    step: 20,
-    size: 50
+	step: 5,
+    size: 20
 };
 
 var canvas = document.getElementById('canvasId');
 var ctx = canvas.getContext('2d');
+
+const canvasParams = {
+	width: canvas.width,
+	height: canvas.height
+};
 
 const cutDigitsAfterDot = (number, numberOfDigits) => Number(number.toString()
     .slice(0, numberOfDigits + getStringBefore(number, ".").length + 1)); 
@@ -48,8 +53,14 @@ function coutnNumberOfRepeats(message) {
     return symbolsData;
 }
 
-ctx.fillRect(graphCoefs.begin, graphCoefs.step, graphCoefs.size, graphCoefs.size);
-
 function createAGraph() {
-    
+	let retreat = graphCoefs.size;
+	ctx.clearRect(0, 0, canvasParams.width, canvasParams.height);
+    for(let element of symbolsData.symbols) {
+		ctx.fillStyle = "black";
+		ctx.fillRect(graphCoefs.begin, retreat, graphCoefs.size*element.numberOfRepeats, graphCoefs.size);
+		ctx.fillStyle = "white";
+		retreat += graphCoefs.size + graphCoefs.step;
+		ctx.fillText(element.symbol, 0, retreat - graphCoefs.size / 2);
+	}
 }
