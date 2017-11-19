@@ -12,7 +12,7 @@ const calcualteCoefs = (nameOfOutputCoef, nameOfInputCoef, numbersOfInputCoefs) 
 
 const resetCoefs = (coefsName, coefsNumbers) => 
     coefsNumbers.forEach((coefNumber) => 
-        document.getElementById(coefsName + coefNumber).value = "")
+        document.getElementById(coefsName + coefNumber).value = "");
 
 function calculateK() {
     resetCoefs("k", [1, 2, 3]);
@@ -24,7 +24,7 @@ function calculateK() {
 
 function calculateSi() {
     resetCoefs("S", [1, 2, 3]);
-    
+
     calcualteCoefs("S1", "i", [1]);
     calcualteCoefs("S1", "k", [1, 2, 3]);
 
