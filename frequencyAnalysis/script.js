@@ -53,7 +53,7 @@ function coutnNumberOfRepeats(message) {
     return symbolsData;
 }
 
-function createAGraph() {
+function createAGraph() {//clear
 	let retreat = graphCoefs.size;
 	ctx.clearRect(0, 0, canvasParams.width, canvasParams.height);
     for(let element of symbolsData.symbols) {
@@ -64,7 +64,8 @@ function createAGraph() {
 		retreat += graphCoefs.size + graphCoefs.step;
 		ctx.fillText(element.symbol, 0, retreat - graphCoefs.size / 2);
         ctx.fillStyle = "#dbdbdb";
-        ctx.fillText(element.numberOfRepeats, graphCoefs.size*element.numberOfRepeats - graphCoefs.size / 2 + 3, retreat - graphCoefs.size / 2);
+        ctx.fillText(element.numberOfRepeats, graphCoefs.size*element.numberOfRepeats - 
+            graphCoefs.size / 2, retreat - graphCoefs.size / 2);
         ctx.font="bold 15px Arial";
         ctx.fillStyle = "#111111";
         ctx.fillText(element.frequencyCoef, graphCoefs.size*element.numberOfRepeats, retreat - graphCoefs.size / 2);
