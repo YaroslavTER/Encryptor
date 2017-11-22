@@ -25,7 +25,7 @@ function calculateK() {
 function calculateSi() {
     resetCoefs("S", [1, 2, 3]);
 
-    calcualteCoefs("S1", "i", [1]);
+    calcualteCoefs("S1", "i", [4]);
     calcualteCoefs("S1", "k", [1, 2, 3]);
 
     calcualteCoefs("S2", "i", [2, 3]);
@@ -34,3 +34,7 @@ function calculateSi() {
     calcualteCoefs("S3", "i", [1, 3]);
     calcualteCoefs("S3", "k", [1, 3]);
 }
+/*
+a4+a5+a6+a7
+i4+k1+k2
+*/
